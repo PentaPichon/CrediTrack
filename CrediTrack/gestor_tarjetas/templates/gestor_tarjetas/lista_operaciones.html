@@ -1,0 +1,43 @@
+{% extends 'gestor_tarjetas/base.html' %}
+
+{% block content %}
+
+<h2>Lista de Operaciones de Tarjeta</h2>
+<table class="table table-striped">
+    <tr>
+        <th>Fecha</th>
+        <th>Concepto</th>
+        <th>Monto</th>
+        <th>Tipo de Operación</th>
+        <th>Cantidad de Cuotas</th>
+    </tr>
+    {% for operacion in operaciones %}
+    <tr>
+        <td>{{ operacion.fecha_operacion }}</td>
+        <td>{{ operacion.concepto }}</td>
+        <td>{{ operacion.monto }}</td>
+        <td>{{ operacion.get_tipo_operacion_display }}</td>
+        <td>{{ operacion.cantidad_cuotas }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">No hay operaciones registradas.</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'nueva_operacion' %}" class="btn btn-primary">Nueva Operación</a>
+
+  
+
+<h2>Pagos Mensuales</h2>
+<!-- Debugging -->
+<pre>{{ pagos_mensuales }}</pre>
+
+{% for mes, total in pagos_mensuales.items %}
+    <p> Mes {{ mes }}: ${{ total }}</p>
+{% endfor %}
+
+
+{% endblock %}
+

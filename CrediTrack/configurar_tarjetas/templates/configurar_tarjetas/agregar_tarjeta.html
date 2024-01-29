@@ -1,0 +1,17 @@
+{% extends 'gestor_tarjetas/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load my_filters %}
+
+<div style="width: 60%; margin: auto;">
+    <br>
+    <h2>Añadir Tarjeta</h2>
+    <br>
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="{% url 'listar_tarjetas' %}" class="btn btn-primary">Volver</a>
+</form>
+</div>
+{% endblock %}

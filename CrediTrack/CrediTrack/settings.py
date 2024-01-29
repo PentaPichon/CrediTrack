@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+from django.contrib.messages import constants as mensajes_de_error
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,6 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gestor_tarjetas',
+    'autenticacion',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'configurar_tarjetas',
 ]
 
 MIDDLEWARE = [
@@ -104,21 +110,47 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LOCALE_NAME = 'es'
+
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
+
+DATE_INPUT_FORMATS = ['%Y-%m-%d']
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+LOGIN_REDIRECT_URL = 'lista_operaciones'  # Nombre de la URL a la que se redirige después del login
+LOGOUT_REDIRECT_URL = 'login'  # Nombre de la URL a la que se redirige después del logout
+LOGIN_URL = 'logear'
+
+
+CRISPY_TEMPLATE_PACK='bootstrap5'
+CRISPY_ALLOWED_TEMPLATE_PACK='bootstrap5'
+
+MESSAGE_TAGS = {
+    mensajes_de_error.DEBUG: 'debug',
+    mensajes_de_error.INFO: 'info',
+    mensajes_de_error.SUCCESS: 'success',
+    mensajes_de_error.WARNING: 'warning',
+    mensajes_de_error.ERROR: 'danger',
+
+}

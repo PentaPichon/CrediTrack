@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +28,8 @@ urlpatterns = [
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gestor_tarjetas/', include('gestor_tarjetas.urls')),
-      path('', RedirectView.as_view(url='/gestor_tarjetas/operaciones/', permanent=True)),  # Incluye las URLs de la app
-]
+    path('', RedirectView.as_view(url='/gestor_tarjetas/operaciones/', permanent=True)),
+    path('autenticacion/', include('autenticacion.urls')),
+    path('configurar_tarjetas/', include('configurar_tarjetas.urls'))
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

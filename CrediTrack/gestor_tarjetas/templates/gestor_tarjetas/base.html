@@ -1,3 +1,6 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,9 +10,46 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <!-- Navbar content aquí -->
-</nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-md">
+          <a class="navbar-brand mb-0 h1" href="#">
+            <img src="{% static 'gestor_tarjetas/imagenes/isologo_creditrack.png' %}" alt="" width="50" height="50" class="d-inline-block align-text-middle">
+            CrediTrack!</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              
+              
+            </ul>
+            
+            <div style="text-align: right; margin-right: 100px;">
+                
+             {% if user.is_authenticated%}
+
+             Hola {{ user.username }} &nbsp;&nbsp; <a href="{% url 'cerrar_sesion' %}">Logout</a>
+             
+             {% else %}
+
+             <a href="{% url 'logear'%}">Login</a> 
+             <a href="{% url 'Autenticacion'%}">Registrate</a>
+
+             {% endif %}
+                
+                
+            </div>
+
+          </div>
+        </div>
+      </nav>
+
 
 <div class="container">
     {% block content %}

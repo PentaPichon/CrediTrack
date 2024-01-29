@@ -1,0 +1,15 @@
+
+{% extends 'gestor_tarjetas/base.html' %}
+
+{% block content %}
+    <h2>Confirmar Eliminación</h2>
+    <p>¿Estás seguro de que quieres eliminar la operación "{{ tarjeta.nombre }}"?</p>
+    
+    <!-- En confirmar_eliminacion.html -->
+<form action="{% url 'eliminar_tarjeta' tarjeta.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+    <a href="{% url 'lista_operaciones' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+
+{% endblock %}

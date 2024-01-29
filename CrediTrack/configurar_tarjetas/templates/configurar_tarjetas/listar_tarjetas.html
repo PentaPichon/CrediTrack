@@ -1,0 +1,43 @@
+{% extends 'gestor_tarjetas/base.html' %}
+
+{% block content %}
+{% load my_filters %}
+
+<br>
+<h1>Listado de Tarjetas</h1>
+<br>
+<table class="table table-striped">
+    <tr>
+        <th>Nombre</th>
+        <th>Cierre</th>
+        <th>Vencimiento</th>
+        <th>Opciones</th>
+        <th></th>
+    </tr>
+    {% for tarjeta in tarjetas %}
+    <tr>
+        <td>{{ tarjeta.nombre }}</td>
+        <td>{{ tarjeta.fecha_cierre }}</td>
+        <td>{{ tarjeta.fecha_vencimiento}}</td>
+        <td><a href="{% url 'editar_tarjeta' tarjeta.id %}" class="btn btn-primary">Editar</a></td>
+    <td><a href="{% url 'confirmar_eliminacion_tarjeta' tarjeta.id %}" class="btn btn-danger">Eliminar</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">No hay tarjetas registradas.</td>
+    </tr>
+    {% endfor %}
+
+
+
+
+</table>
+<br>
+<br>
+<br>
+<div>
+<a href="{% url 'agregar_tarjeta' %}" class="btn btn-primary">Agregar</a>
+<a href="{% url 'lista_operaciones' %}" class="btn btn-secondary">Cancelar</a> 
+</div>
+
+{% endblock %}

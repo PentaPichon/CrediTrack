@@ -1,0 +1,32 @@
+<!-- registro.html -->
+
+{% extends 'gestor_tarjetas/base.html' %}
+
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+<form method="post" action="">
+
+    <div style="width: 60%; margin: auto;">
+    <br>
+    <br>
+    
+    <h2>Formulario de Registro</h2> 
+
+    <br>
+    <br>
+    {% csrf_token %}
+    {{form|crispy}}
+
+    <button type="submit" class="btn btn-success">Registrate</button>
+    <a href="{% url 'lista_operaciones' %}" class="btn btn-secondary">Cancelar</a>
+</div>
+
+
+</form>
+
+{% endblock %}

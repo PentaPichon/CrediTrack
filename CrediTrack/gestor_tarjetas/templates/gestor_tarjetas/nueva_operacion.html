@@ -1,29 +1,40 @@
 {% extends 'gestor_tarjetas/base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 
-<h2>Añadir Nueva Operación</h2>
+
+<div style="width: 60%; margin: auto;">
+    <br>
+    <h2>Añadir Nueva Operación</h2>
+    <br>
 <form method="post" class="form">
     {% csrf_token %}
-    
-    {% for field in form %}
-    <div class="form-group">
-        {{ field.label_tag }}
-        {{ field }}
-        {% if field.help_text %}
-        <small class="form-text text-muted">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-        <div class="alert alert-danger" role="alert">
-            {{ error }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endfor %}
-
+    {{ form|crispy }}
     <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="{% url 'lista_operaciones' %}" class="btn btn-primary">Volver</a>
 </form>
+</div>
 
-<a href="{% url 'lista_operaciones' %}" class="btn btn-primary">Volver</a>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var tipoOperacionField = document.getElementById("id_tipo_operacion");  // Asegúrate de usar el ID correcto
+        var cuotasField = document.getElementById("id_cantidad_cuotas");  // Asegúrate de usar el ID correcto
+    
+        function toggleCuotasField() {
+            // Suponiendo que 'CUOTA' es el valor de la opción para compra en cuotas
+            cuotasField.parentElement.style.display = tipoOperacionField.value === 'CUOTA' ? 'block' : 'none';
+        }
+    
+        // Evento de cambio para el campo tipo_operacion
+        tipoOperacionField.addEventListener("change", toggleCuotasField);
+    
+        // Inicializar en la carga
+        toggleCuotasField();
+    });
+</script>
+    
+
 
 {% endblock %}

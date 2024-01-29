@@ -1,0 +1,34 @@
+<!-- resumen.html -->
+
+{% extends 'gestor_tarjetas/base.html' %}
+
+{% block content %}
+
+{% load my_filters %}
+
+<h2>Resumen</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Año</th>
+            <th>Mes</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for año, mes, monto_total in resumen %}
+            <tr>
+                <td>{{ año }}</td>
+                <td>{{ mes|capfirst }}</td>
+                <td>${{ monto_total|format_currency }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<br>
+
+<a href="{% url 'lista_operaciones' %}" class="btn btn-primary">Volver</a>
+{% endblock %}

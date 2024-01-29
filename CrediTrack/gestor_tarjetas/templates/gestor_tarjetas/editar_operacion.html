@@ -1,0 +1,35 @@
+{% extends 'gestor_tarjetas/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div style="width: 60%; margin: auto;">
+    <br>
+<h2>Editar Operación</h2>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}  <!-- Muestra el formulario aquí -->
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a href="{% url 'lista_operaciones' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>   
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var tipoOperacionField = document.getElementById("id_tipo_operacion");  // Asegúrate de usar el ID correcto
+        var cuotasField = document.getElementById("id_cantidad_cuotas");  // Asegúrate de usar el ID correcto
+    
+        function toggleCuotasField() {
+            // Suponiendo que 'CUOTA' es el valor de la opción para compra en cuotas
+            cuotasField.parentElement.style.display = tipoOperacionField.value === 'CUOTA' ? 'block' : 'none';
+        }
+    
+        // Evento de cambio para el campo tipo_operacion
+        tipoOperacionField.addEventListener("change", toggleCuotasField);
+    
+        // Inicializar en la carga
+        toggleCuotasField();
+    });
+</script>
+{% endblock %}

@@ -1,23 +1,33 @@
 {% extends 'gestor_tarjetas/base.html' %}
 
 {% block content %}
+{% load my_filters %}
 
-<h2>Lista de Operaciones de Tarjeta</h2>
+<br>
+<a href="{% url 'nueva_operacion' %}" class="btn btn-primary">Nueva Operación</a>
+<a href="{% url 'resumen' %}" class="btn btn-primary">Ver Resumen</a>
+<a href="{% url 'listar_tarjetas' %}" class="btn btn-primary">Ver Tarjetas</a>
+
+<br><br><br>
+
+<h3>Suscripciones Activas:</h3>
 <table class="table table-striped">
     <tr>
         <th>Fecha</th>
+        <th>Tarjeta</th>
         <th>Concepto</th>
         <th>Monto</th>
-        <th>Tipo de Operación</th>
-        <th>Cantidad de Cuotas</th>
+        <th>Opciones</th>
+        <th></th>
     </tr>
-    {% for operacion in operaciones %}
+    {% for operacion in operaciones_suscripcion %}
     <tr>
-        <td>{{ operacion.fecha_operacion }}</td>
+        <td>{{ operacion.fecha_operacion|date:"d/m/Y" }}</td>
+        <td>{{ operacion.tarjeta_credito.nombre}}</td>
         <td>{{ operacion.concepto }}</td>
-        <td>{{ operacion.monto }}</td>
-        <td>{{ operacion.get_tipo_operacion_display }}</td>
-        <td>{{ operacion.cantidad_cuotas }}</td>
+        <td>${{ operacion.monto|format_currency }}</td>
+        <td><a href="{% url 'editar_operacion' operacion.id %}" class="btn btn-primary">Editar</a></td>
+        <td><a href="{% url 'confirmar_eliminacion' operacion.id %}" class="btn btn-danger">Eliminar</a></td>
     </tr>
     {% empty %}
     <tr>
@@ -26,17 +36,34 @@
     {% endfor %}
 </table>
 
-<a href="{% url 'nueva_operacion' %}" class="btn btn-primary">Nueva Operación</a>
 
-  
-
-<h2>Pagos Mensuales</h2>
-<!-- Debugging -->
-<pre>{{ pagos_mensuales }}</pre>
-
-{% for mes, total in pagos_mensuales.items %}
-    <p> Mes {{ mes }}: ${{ total }}</p>
-{% endfor %}
+<h3>Compras en Cuotas:</h3>
+<table class="table table-striped">
+    <tr>
+        <th>Fecha</th>
+        <th>Tarjeta</th>
+        <th>Concepto</th>
+        <th>Monto</th>
+        <th>Cantidad de Cuotas</th>
+        <th>Opciones</th>
+        <th></th>
+    </tr>
+    {% for operacion in operaciones_cuotas %}
+    <tr>
+        <td>{{ operacion.fecha_operacion|date:"d/m/Y" }}</td>
+        <td>{{ operacion.tarjeta_credito.nombre}}</td>
+        <td>{{ operacion.concepto }}</td>
+        <td>${{ operacion.monto|format_currency }}</td>
+        <td>{{ operacion.cantidad_cuotas }}</td>
+        <td><a href="{% url 'editar_operacion' operacion.id %}" class="btn btn-primary">Editar</a></td>
+        <td><a href="{% url 'confirmar_eliminacion' operacion.id %}" class="btn btn-danger">Eliminar</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">No hay operaciones registradas.</td>
+    </tr>
+    {% endfor %}
+</table>
 
 
 {% endblock %}

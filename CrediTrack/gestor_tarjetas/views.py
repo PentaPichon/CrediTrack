@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import OperacionTarjeta, Calendario
+from .models import OperacionTarjeta, Calendario, ConfiguracionTarjeta
 from .forms import OperacionTarjetaForm
-from django.db.models import Sum
-from django.db.models.functions import ExtractMonth, ExtractYear
 import calendar
 from dateutil.relativedelta import relativedelta
 import locale
@@ -10,6 +8,10 @@ from django.utils.timezone import make_aware
 from datetime import datetime, timedelta
 from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import ExtractMonth, ExtractYear
+from django.db.models import Sum
+
+
 
 
 def calcular_pagos_mensuales(usuario):
@@ -50,7 +52,7 @@ def calcular_pagos_mensuales(usuario):
 
 
     return resumen_lista
-    
+
 
 @login_required
 def nueva_operacion(request):
@@ -61,24 +63,32 @@ def nueva_operacion(request):
             operacion.usuario =request.user
             operacion.save()
 
+            tarjeta_seleccionada = ConfiguracionTarjeta.objects.get(id=operacion.tarjeta_credito.id)
+            fecha_cierre = tarjeta_seleccionada.fecha_cierre
+            monto_cuota = operacion.monto / operacion.cantidad_cuotas
+
+            if operacion.fecha_operacion > fecha_cierre:
+                fecha_contabilizacion = operacion.fecha_operacion.replace(day=1) + relativedelta(months=1)
+                
+            else:
+                fecha_contabilizacion = operacion.fecha_operacion.replace(day=1)                
+
             if operacion.tipo_operacion == 'CUOTA':
                 for n in range (operacion.cantidad_cuotas):
-                    monto_cuota = operacion.monto / operacion.cantidad_cuotas
-                    fecha_vencimiento = operacion.fecha_operacion + relativedelta(months=+n)
+                    fecha_cuota = fecha_contabilizacion + relativedelta(months=n+1)
                     Calendario.objects.create(
                         operacion_id=operacion,
                         numero_cuota=n+1,
                         monto_cuota=monto_cuota,
-                        fecha_vencimiento=fecha_vencimiento,
-                        concepto=operacion.concepto
+                        fecha_vencimiento=fecha_cuota,
+                        fecha_cierre_en_operacion=fecha_cierre,
+                        concepto=operacion.concepto,     
                     )
-
-            return redirect ('lista_operaciones')
-    
         
+            return redirect ('lista_operaciones')
     else:
         form = OperacionTarjetaForm()
-
+    
     return render(request, 'gestor_tarjetas/nueva_operacion.html', {'form': form})
 
 

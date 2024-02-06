@@ -42,6 +42,7 @@ class Calendario(models.Model):
     numero_cuota = models.PositiveIntegerField()
     monto_cuota = models.DecimalField(max_digits=10, decimal_places =2)
     fecha_vencimiento = models.DateField()
+    fecha_cierre_en_operacion = models.DateField(null=False)
     concepto = models.CharField(max_length=200)
 
     def __str__(self):

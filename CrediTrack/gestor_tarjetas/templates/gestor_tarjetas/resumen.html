@@ -8,17 +8,22 @@
 
 <h2>Resumen</h2>
 
-<table>
-    <thead>
+  
+
+
+
+<table class="table table-striped">
+    
         <tr>
             <th>Año</th>
             <th>Mes</th>
             <th>Total</th>
         </tr>
-    </thead>
+    
     <tbody>
-        {% for año, mes, monto_total in resumen %}
+        {% for  año, mes, monto_total in resumen %}
             <tr>
+                
                 <td>{{ año }}</td>
                 <td>{{ mes|capfirst }}</td>
                 <td>${{ monto_total|format_currency }}</td>
@@ -26,6 +31,7 @@
         {% endfor %}
     </tbody>
 </table>
+
 
 <br>
 <br>
